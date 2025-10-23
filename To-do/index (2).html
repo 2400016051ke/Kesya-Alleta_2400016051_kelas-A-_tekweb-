@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <h1>MY To Do List</h1>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <title>MY-To-Do App</title>
+     <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div class="settings">
+        <select id ="bg-color-select">
+            <option value="">change Background color</option>
+            <option value="White">White</option>
+            <option Value= "LightGray">Lightgray</option>
+            <option Value="lightgreen">lightgreen</option>"
+         </select>
+         <button id="font-size-increase">Increase font size</button>
+         <button id="font-size-decrease">Decrease font size</button>
+         <button id="dark-mode-toggle">Toggle dark mode</button>
+         <select id="font-style-select">
+            <option value="Change Font style"></option>
+            <option value ="Arial">Arial</option>
+    <style> 
+        body {
+            font-family: sans-serif;
+        }
+
+        .container {
+            width: 350px;
+            margin: 0 auto;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+        }
+
+        #taskList {
+            list-style: none;
+            padding: 0;
+        }
+
+        #taskList li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .close {
+            color: red;
+            float: right;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>My To-Do List</h2>
+        <input type="text" id="newTask" placeholder="Add a new task...">
+        <button onclick="addTask()">Add</button>
+
+        <ul id="taskList">
+        </ul>
+    </div>
+
+    <script>
+        function addTask() {
+           
+        }
+
+        function deleteTask(element) {
+           
+        }
+
+        function editTask(element) {
+           
+        }
+    </script>
+
+</body>
+
+</html>

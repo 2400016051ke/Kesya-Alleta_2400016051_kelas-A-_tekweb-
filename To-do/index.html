@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MY To-Do App</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Bagian Pengaturan (Settings) -->
+    <div class="settings">
+      <select id="bg-color-select">
+        <option value="">Change Background Color</option>
+        <option value="white">White</option>
+        <option value="lightgray">Light Gray</option>
+        <option value="lightgreen">Light Green</option>
+        <option value="Violet">Violet</option>
+      </select>
+
+      <select id="font-style-select">
+        <option value="">Change Font Style</option>
+        <option value="Arial">Arial</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Courier New">
+          <table>
+            Times New Roman
+          </table>
+        </option>
+        <option value="Verdana">Verdana</option>
+      </select>
+
+      <button id="font-size-increase">Increase Font Size</button>
+      <button id="font-size-decrease">Decrease Font Size</button>
+      <button id="dark-mode-toggle">Toggle dark mode</button>
+    </div>
+
+    <!-- Kontainer To-Do List -->
+    <div class="container">
+      <h1>My To-Do List</h1>
+      <input type="text" id="newTask" placeholder="Add a new task..." />
+      <button onclick="addTask()">Add</button>
+
+      <ul id="taskList"></ul>
+    </div>
+
+    <script src="dom.js"></script>
+  </body>
+</html>
