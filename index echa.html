@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MY To-Do App</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: sans-serif;
+      background-color: white;
+      color: #333;
+      padding: 20px;
+      font-size: 16px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .settings {
+      display: flex; flex-wrap: wrap; gap: 10px; padding: 15px;
+      background-color: #f8f8f8; border-radius: 8px; margin-bottom: 20px;
+      align-items: center;
+    }
+    .settings select, .settings button {
+      padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;
+    }
+    .settings button { cursor: pointer; color: white; border: none; }
+    #font-size-increase { background-color: #28a745; }
+    #font-size-decrease { background-color: #dc3545; }
+    #dark-mode-toggle { background-color: #6c757d; }
+    .container {
+      max-width: 500px; margin: 0 auto; background: white; padding: 20px;
+      border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    input[type="text"] {
+      width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd;
+      border-radius: 4px; font-size: 16px;
+    }
+    button[onclick="addTask()"] {
+      background-color: #007bff; color: white; border: none;
+      padding: 8px 16px; border-radius: 4px; cursor: pointer; margin-bottom: 15px;
+    }
+    #taskList { list-style: none; }
+    #taskList li {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px; border-bottom: 1px solid #eee;
+    }
+    .task-text { flex: 1; cursor: pointer; padding-right: 10px; }
+    .edit-input { flex: 1; padding: 6px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; }
+    .close { color: #dc3545; font-weight: bold; cursor: pointer; padding: 2px 6px; }
+    /* Dark Mode */
+    body.dark-mode {
+      background-color: #121212 !important;
+      color: #f0f0f0 !important;
+    }
+    body.dark-mode .container { background-color: #1e1e1e !important; }
+    body.dark-mode .settings { background-color: #2a2a2a !important; }
+    body.dark-mode input[type="text"],
+    body.dark-mode .edit-input {
+      background-color: #333 !important; color: #fff !important; border-color: #555 !important;
+    }
+    body.dark-mode .close { color: #ff6b6b !important; }
+  </style>
+</head>
+<body>
+  <div class="settings">
+    <select id="bg-color-select">
+      <option value="">Change Background Color</option>
+      <option value="white">White</option>
+      <option value="lightgray">Light Gray</option>
+      <option value="lightgreen">Light Green</option>
+      <option value="violet">Violet</option>
+      <option value="black">Black</option>
+    </select>
+    <select id="font-style-select">
+      <option value="">Change Font Style</option>
+      <option value="Arial">Arial</option>
+      <option value="Georgia">Georgia</option>
+      <option value="Courier New">Courier New</option>
+      <option value="Times New Roman">Times New Roman</option>
+      <option value="Verdana">Verdana</option>
+    </select>
+    <button id="font-size-increase">Increase Font Size</button>
+    <button id="font-size-decrease">Decrease Font Size</button>
+    <button id="dark-mode-toggle">Toggle Dark Mode</button>
+  </div>
+
+  <div class="container">
+    <h1>My To-Do List</h1>
+    <input type="text" id="newTask" placeholder="Add a new task..." />
+    <button onclick="addTask()">Add</button>
+    <ul id="taskList"></ul>
+  </div>
+
+  <script>
+    let fontSize = 16;
+    function addTask() {
+      const input = document.getElementById("newTask");
+      const text = input.value.trim();
+      if (!text) return;
+      const li = document.createElement("li");
+      const span = document.createElement("span");
+      span.className = "task-text";
+      span.textContent = text;
+      span.ondblclick = () => editTask(span);
+      const close = document.createElement("span");
+      close.className = "close";
+      close.innerHTML = "&times;";
+      close.onclick = () => li.remove();
+      li.append(span, close);
+      document.getElementById("taskList").appendChild(li);
+      input.value = "";
+      document.body.style.fontSize = fontSize + "px";
+    }
+    function editTask(span) {
+      const text = span.textContent;
+      const input = document.createElement("input");
+      input.className = "edit-input";
+      input.value = text;
+      input.onkeydown = (e) => {
+        if (e.key === "Enter") {
+          span.textContent = input.value.trim() || text;
+          span.style.display = "block";
+          input.remove();
+        }
+      };
+      input.onblur = () => {
+        span.textContent = input.value.trim() || text;
+        span.style.display = "block";
+        input.remove();
+      };
+      span.style.display = "none";
+      span.parentNode.insertBefore(input, span.nextSibling);
+      input.focus();
+    }
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("bg-color-select")?.addEventListener("change", (e) => {
+        document.body.style.backgroundColor = e.target.value || "white";
+      });
+      document.getElementById("font-style-select")?.addEventListener("change", (e) => {
+        document.body.style.fontFamily = e.target.value || "sans-serif";
+      });
+      document.getElementById("font-size-increase")?.addEventListener("click", () => {
+        fontSize += 2;
+        document.body.style.fontSize = fontSize + "px";
+      });
+      document.getElementById("font-size-decrease")?.addEventListener("click", () => {
+        if (fontSize > 10) {
+          fontSize -= 2;
+          document.body.style.fontSize = fontSize + "px";
+        }
+      });
+      document.getElementById("dark-mode-toggle")?.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+      });
+    });
+  </script>
+</body>
+</html>
