@@ -1,0 +1,331 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MY To-Do App</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Bagian Pengaturan (Settings) -->
+    <div class="settings">
+      <select id="bg-color-select">
+        <option value="">Change Background Color</option>
+        <option value="white">White</option>
+        <option value="lightgray">Light Gray</option>
+        <option value="lightgreen">Light Green</option>
+        <option value="Violet">Violet</option>
+        <option value="black">black</option>
+      </select>
+
+      <select id="font-style-select">
+        <option value="">Change Font Style</option>
+        <option value="Arial">Arial</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Courier New">Courier New</option>
+        <option  Value="Times New Roman">Times New Roman</option>
+          <table>
+            
+          </table>
+        </option>
+        <option value="Verdana">Verdana</option>
+      </select>
+
+      <button id="font-size-increase">Increase Font Size</button>
+      <button id="font-size-decrease">Decrease Font Size</button>
+      <button id="dark-mode-toggle">Toggle dark mode</button>
+    </div>
+
+    <!-- Kontainer To-Do List -->
+    <div class="container">
+      <h1>My To-Do List</h1>
+      <input type="text" id="newTask" placeholder="Add a new task..." />
+      <button onclick="addTask()">Add</button>
+
+      <ul id="taskList"></ul>
+
+
+      /* Reset & Umum */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  background-color: white;
+  color: #333;
+  transition: background-color 0.3s, color 0.3s;
+  padding: 20px;
+}
+
+/* Settings */
+.settings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 15px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.settings select,
+.settings button {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.settings button {
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+}
+
+.settings button:hover {
+  opacity: 0.9;
+}
+
+#font-size-increase {
+  background-color: #28a745;
+}
+#font-size-decrease {
+  background-color: #dc3545;
+}
+#dark-mode-toggle {
+  background-color: #6c757d;
+}
+
+/* Container To-Do */
+.container {
+  max-width: 500px;
+  margin: 0 auto;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.container h1 {
+  margin-bottom: 15px;
+  font-size: 24px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+button[onclick="addTask()"] {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+button[onclick="addTask()"]:hover {
+  background-color: #0056b3;
+}
+
+/* Daftar Tugas */
+#taskList {
+  list-style: none;
+}
+
+#taskList li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  word-break: break-word;
+}
+
+#taskList li:last-child {
+  border-bottom: none;
+}
+
+.task-text {
+  flex: 1;
+  cursor: pointer;
+  padding-right: 10px;
+}
+
+.edit-input {
+  flex: 1;
+  padding: 6px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.close {
+  color: #dc3545;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.close:hover {
+  background-color: #ffe6e6;
+}
+
+/* =================== DARK MODE STYLE =================== */
+body.dark-mode {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .settings {
+  background-color: #1e1e1e !important;
+  border-color: #333 !important;
+}
+
+body.dark-mode .container {
+  background-color: #1e1e1e !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode input[type="text"] {
+  background-color: #333 !important;
+  color: #ffffff !important;
+  border-color: #555 !important;
+}
+
+body.dark-mode #taskList li {
+  border-bottom-color: #444 !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .close {
+  color: #ff6b6b !important;
+}
+
+    </div>
+
+    <script src="dom.js"></script>
+
+    
+  </body>
+
+
+  let fontSize = 16; // Ukuran font default dalam piksel
+
+function addTask() {
+  const input = document.getElementById("newTask");
+  const taskText = input.value.trim();
+  if (taskText === "") return;
+
+  const li = document.createElement("li");
+
+  const span = document.createElement("span");
+  span.className = "task-text";
+  span.textContent = taskText;
+  span.addEventListener("click", () => editTask(span));
+
+  const closeBtn = document.createElement("span");
+  closeBtn.className = "close";
+  closeBtn.innerHTML = "&times;";
+  closeBtn.onclick = () => deleteTask(li);
+
+  li.appendChild(span);
+  li.appendChild(closeBtn);
+  document.getElementById("taskList").appendChild(li);
+
+  input.value = "";
+  applyFontSize();
+}
+
+function deleteTask(element) {
+  element.remove();
+}
+
+function editTask(span) {
+  const currentText = span.textContent;
+  const input = document.createElement("input");
+  input.type = "text";
+  input.className = "edit-input";
+  input.value = currentText;
+
+  input.onblur = () => {
+    span.textContent = input.value.trim() || currentText;
+    span.style.display = "block";
+    input.remove();
+  };
+
+  input.onkeydown = (e) => {
+    if (e.key === "Enter") {
+      input.blur();
+    }
+  };
+
+  span.style.display = "none";
+  span.parentNode.insertBefore(input, span);
+  input.focus();
+}
+
+// --- Fitur Pengaturan (Settings) ---
+document.addEventListener("DOMContentLoaded", () => {
+  // Ganti warna latar
+  document
+    .getElementById("bg-color-select")
+    ?.addEventListener("change", function () {
+      document.body.style.backgroundColor = this.value || "white";
+    });
+
+  // Ganti font
+  document
+    .getElementById("font-style-select")
+    ?.addEventListener("change", function () {
+      document.body.style.fontFamily = this.value || "sans-serif";
+    });
+
+  // Perbesar font
+  document
+    .getElementById("font-size-increase")
+    ?.addEventListener("click", () => {
+      fontSize += 2;
+      applyFontSize();
+    });
+
+  // Perkecil font
+  document
+    .getElementById("font-size-decrease")
+    ?.addEventListener("click", () => {
+      if (fontSize > 10) {
+        fontSize -= 2;
+        applyFontSize();
+      }
+    });
+
+  // Tambahkan di akhir file dom.js (atau setelah fungsi addTask)
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggleBtn = document.getElementById("dark-mode-toggle");
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", function () {
+        document.body.classList.toggle("dark-mode");
+        console.log("Dark mode toggled. Body class:", document.body.className);
+      });
+    }
+  });
+});
+
+function applyFontSize() {
+  document.body.style.fontSize = fontSize + "px";
+}
+
+</html>
